@@ -1,7 +1,8 @@
 "use server";
 import client from "@/db";
 
-async function solve(username: string, password: string) {
+export async function signup(username: string, password: string) {
+    console.log("server action called !!!")
   try {
     await client.user.create({
       data: {
