@@ -1,0 +1,7 @@
+{
+  "extends": "@repo/typescript-congit/base.json",
+  "compilerOptions": {
+    "rootDir": "./src",
+    "outDir": "./dist"
+  }
+}
