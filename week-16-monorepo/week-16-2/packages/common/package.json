@@ -4,7 +4,10 @@
   "description": "",
   "main": "index.js",
   "exports": {
-    "./config": "./src/index.ts"
+    "./config": "./index.ts"
+  },
+  "dependencies": {
+    "@repo/common": "*"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
