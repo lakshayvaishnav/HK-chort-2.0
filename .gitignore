@@ -1,0 +1,28 @@
+# Ignore .env files
+.env
+
+# Ignore node_modules directory
+node_modules/
+
+# Ignore compiled files
+*.log
+*.gz
+
+# Ignore macOS system files
+.DS_Store
+
+# Ignore editor/IDE files
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# Ignore npm debug log
+npm-debug.log*
+
+# Ignore yarn lock file
+yarn.lock
+
+# Ignore OS-generated files
+Thumbs.db
+
