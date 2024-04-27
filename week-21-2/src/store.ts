@@ -6,7 +6,21 @@ interface Game {
 }
 
 export class GameManager {
+  private static instance: GameManager;
   private games: Game[] = [];
+  private constructor() {
+    this.games = [];
+  }
+
+  static getInstance() {
+    // create a stance of the gameManager class .
+    if (GameManager.instance) {
+      return GameManager.instance;
+    } else {
+      GameManager.instance = new GameManager();
+      return GameManager.instance;
+    }
+  }
 
   public addGame(game: Game) {
     this.games.push(game);
@@ -28,4 +42,6 @@ export class GameManager {
   }
 }
 
-export const Games = new GameManager();
+// constructor of this calss is private so you can;t create a new instance...
+
+export const gameManager = GameManager.getInstance();
