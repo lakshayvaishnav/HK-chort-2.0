@@ -1,7 +1,7 @@
-import { Games } from "./store";
+// // import { Games } from "./store";
 
-export function startLogger() {
-  setInterval(() => {
-    Games.logState();
-  }, 2000);
-}
+// export function startLogger() {
+//   setInterval(() => {
+//     Games.logState();
+//   }, 2000);
+// }

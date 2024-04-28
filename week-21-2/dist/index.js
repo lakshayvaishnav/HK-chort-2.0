@@ -1,13 +1,20 @@
 "use strict";
+// import { Games } from "./store";
+// import { startLogger } from "./logger";
 Object.defineProperty(exports, "__esModule", { value: true });
-const store_1 = require("./store");
-const logger_1 = require("./logger");
-(0, logger_1.startLogger)();
+// startLogger();
+// setInterval(() => {
+//   Games.addGame({
+//     id: Math.random().toString(),
+//     whitePlayer: "lxsh",
+//     blackPlayer: "samay",
+//     moves: [],
+//   });
+// }, 1000);
+const pubsubManager_1 = require("./pubsubManager");
+var count = 1;
 setInterval(() => {
-    store_1.Games.addGame({
-        id: Math.random().toString(),
-        whitePlayer: "lxsh",
-        blackPlayer: "samay",
-        moves: [],
-    });
-}, 1000);
+    pubsubManager_1.PubSubManager.getInstance().userSubscribe(count.toString(), "APPL");
+    console.log("new user created : ", count);
+    count++;
+}, 5000);

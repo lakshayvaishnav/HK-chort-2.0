@@ -1,13 +1,22 @@
-import { Games } from "./store";
-import { startLogger } from "./logger";
+// import { Games } from "./store";
+// import { startLogger } from "./logger";
 
-startLogger();
+// startLogger();
 
+// setInterval(() => {
+//   Games.addGame({
+//     id: Math.random().toString(),
+//     whitePlayer: "lxsh",
+//     blackPlayer: "samay",
+//     moves: [],
+//   });
+// }, 1000);
+
+import { PubSubManager } from "./pubsubManager";
+
+var count = 1;
 setInterval(() => {
-  Games.addGame({
-    id: Math.random().toString(),
-    whitePlayer: "lxsh",
-    blackPlayer: "samay",
-    moves: [],
-  });
-}, 1000);
+  PubSubManager.getInstance().userSubscribe(count.toString(), "APPL");
+  console.log("new user created : ", count);
+  count++;
+}, 5000);
