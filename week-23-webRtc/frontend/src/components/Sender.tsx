@@ -1,68 +1,80 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
-const Sender = () => {
+export const Sender = () => {
   const [socket, setSocket] = useState<WebSocket | null>(null);
+  const [pc, setPc] = useState<RTCPeerConnection | null>(null);
 
   useEffect(() => {
     const socket = new WebSocket("ws://localhost:8080");
     setSocket(socket);
     socket.onopen = () => {
-      socket.send(
-        JSON.stringify({
-          type: "sender",
-        })
-      );
+      socket.send(JSON.stringify({ type: "sender" }));
     };
   }, []);
 
-  async function startSendingVideo() {
-    if (!socket) return;
-    // create an offer.
-    const pc = new RTCPeerConnection();
-    pc.onnegotiationneeded = async () => {
-      console.log("on negoitiation needed");
-      const offer = await pc.createOffer(); //sdp
-      await pc.setLocalDescription(offer);
-      socket.send(
-        JSON.stringify({ type: "createOffer", sdp: pc.localDescription })
-      );
-    };
+  const initiateConn = async () => {
+    if (!socket) {
+      alert("Socket not found");
+      return;
+    }
 
-    // send - video
+    socket.onmessage = async (event) => {
+      const message = JSON.parse(event.data);
+      if (message.type === "creteAnswer") {
+        await pc?.setRemoteDescription(message.sdp);
+      } else if (message.type === "iceCandidate") {
+        pc?.addIceCandidate(message.candidate);
+      }
+    };
+  };
+
+  const PC = new RTCPeerConnection();
+  setPc(PC);
+  // might prone to errors !!
+  if (pc) {
     pc.onicecandidate = (event) => {
       if (event.candidate) {
         socket?.send(
-          JSON.stringify({ type: "iceCandidate", candidate: event.candidate })
+          JSON.stringify({
+            type: "iceCandidate",
+            candidate: event.candidate,
+          })
         );
       }
     };
 
-    // trickle ice
-    socket?.send(
-      JSON.stringify({ type: "createOffer", sdp: pc.localDescription })
-    );
-
-    socket.onmessage = (event) => {
-      const data = JSON.parse(event.data);
-      if (data.type === "createAnswer") {
-        pc.setRemoteDescription(data.sdp);
-      } else if (data.type === "iceCandidate") {
-        pc.addIceCandidate(data.candidate);
-      }
+    const getCameraStreamAndSend = (pc: RTCPeerConnection) => {
+      navigator.mediaDevices
+        .getUserMedia({ video: true })
+        .then((stream: any) => {
+          const video = document.createElement("video");
+          video.srcObject = stream;
+          video.play();
+          // this can also be wrong.
+          document.body.appendChild(video);
+          stream.getTracks().forEach((track: any) => {
+            pc?.addTrack(track);
+          });
+        });
     };
-
-    const stream = await navigator.mediaDevices.getUserMedia({
-      video: true,
-      audio: false,
-    });
-    pc.addTrack(stream.getVideoTracks()[0]);
+    pc.onnegotiationneeded = async () => {
+      const offer = await pc?.createOffer();
+      await pc.setLocalDescription(offer);
+      socket?.send(
+        JSON.stringify({
+          type: "createOffer",
+          sdp: pc.localDescription,
+        })
+      );
+    };
+    // function to get camera;
+    getCameraStreamAndSend(pc);
   }
 
   return (
     <div>
-      <button onClick={() => startSendingVideo()}>Send Video</button>
+      sender
+      <button onClick={initiateConn}>Send Video</button>
     </div>
   );
 };
-
-export default Sender;
