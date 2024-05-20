@@ -10,7 +10,6 @@ export const Receiver = () => {
         })
       );
     };
-    // start receiving
     startReceiving(socket);
   }, []);
 
@@ -23,6 +22,7 @@ export const Receiver = () => {
       video.srcObject = new MediaStream([event.track]);
       video.play();
     };
+
     socket.onmessage = (event) => {
       const message = JSON.parse(event.data);
       if (message.type === "createOffer") {
@@ -38,10 +38,10 @@ export const Receiver = () => {
           });
         });
       } else if (message.type === "iceCandidate") {
-        pc.addIceCandidate(message.iceCandidate);
+        pc.addIceCandidate(message.candidate);
       }
     };
   }
 
-  return <div>this is reciever</div>;
+  return <div></div>;
 };
