@@ -1,11 +1,11 @@
-import { prismaclient } from "../db";
+import { prismaclient } from "..//__mocks__/db";
 import { describe, expect, it, vi } from "vitest";
 import { app } from "../index";
 import request from "supertest";
 
-vi.mock("../db", () => ({
-  prismaclient: { sum: { create: vi.fn() } },
-}));
+vi.mock("../db");
+
+console.log(Object.keys(prismaclient));
 
 describe("/sum ", () => {
   it("adds 2 numbers", async () => {

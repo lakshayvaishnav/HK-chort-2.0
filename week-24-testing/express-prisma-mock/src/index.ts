@@ -1,6 +1,6 @@
 import express, { response } from "express";
 import { z } from "zod";
-import { prismaclient } from "./db";
+import { prismaclient } from "./__mocks__/db";
 
 export const app = express();
 app.use(express.json());
