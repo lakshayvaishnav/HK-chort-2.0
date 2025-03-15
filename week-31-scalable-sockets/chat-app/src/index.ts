@@ -1,4 +1,9 @@
 import ws, { WebSocket, WebSocketServer } from "ws";
+import { createClient } from "redis";
+
+// single client can either publish or subscribe
+const client = createClient();
+client.connect();
 
 const wss = new WebSocketServer({ port: 8080 });
 
