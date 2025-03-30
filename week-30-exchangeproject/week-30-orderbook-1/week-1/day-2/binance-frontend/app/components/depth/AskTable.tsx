@@ -27,7 +27,7 @@ export const AskTable = ({ asks }: { asks: [string, string][] }) => {
      *    129.93 10   10
 
      * 129.94 5    15
-     * 132.96 3    18
+     * 132.96 3    18 
      * 132.97 253.03     270
      */
     asksWithTotal.reverse();

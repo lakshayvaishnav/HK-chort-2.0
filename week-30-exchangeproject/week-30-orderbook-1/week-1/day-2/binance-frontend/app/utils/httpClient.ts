@@ -5,6 +5,7 @@ const BASE_URL = "https://exchange-proxy.100xdevs.com/api/v1";
 
 export async function getTicker(market: string): Promise<Ticker> {
     const tickers = await getTickers();
+    // @ts-ignore
     const ticker = tickers.find(t => t.symbol === market);
     if (!ticker) {
         throw new Error(`No ticker found for ${market}`);
