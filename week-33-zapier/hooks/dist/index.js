@@ -22,18 +22,19 @@ app.post("/hooks/catch/:userId/:zapId", (req, res) => __awaiter(void 0, void 0, 
     const body = req.body;
     // store in db a new trigger
     yield Client.$transaction((tx) => __awaiter(void 0, void 0, void 0, function* () {
-        const run = yield Client.zapRun.create({
+        const run = yield tx.zapRun.create({
             data: {
                 zapId: zapId,
                 metadata: body,
             },
         });
-        yield Client.zapRunOutbox.create({
+        yield tx.zapRunOutbox.create({
             data: {
                 zapRunId: run.id,
             },
         });
     }));
+    res.json({ message: "webhook recieved" });
 }));
 app.listen(3000, () => {
     console.log("listening at 3000");
