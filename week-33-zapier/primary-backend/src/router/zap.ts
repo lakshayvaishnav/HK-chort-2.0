@@ -8,6 +8,10 @@ router.post("/", authMiddleware, (req,res)=> {
 })
 
 router.get("/", authMiddleware, (req,res)=> {
+    console.log("zaps")
+})
+
+router.get("/:zapId", authMiddleware, (req,res)=> {
     console.log("sigin handler")
 })
 
