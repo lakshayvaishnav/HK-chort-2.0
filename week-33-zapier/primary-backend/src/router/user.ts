@@ -82,8 +82,25 @@ router.post("/signin", async (req, res) => {
   });
 });
 
-router.get("/user", authMiddleware, (req, res) => {
-  console.log("signin handler");
+// @ts-ignore
+router.get("/user", authMiddleware, async(req, res) => {
+  // TODO: Fix the type
+  // @ts-ignore
+  const id = req.id;
+  const user = await prismaClient.user.findFirst({
+    where: {
+      id,
+    },
+    select: {
+      name: true,
+      email: true,
+    },
+  });
+
+  return res.json({
+    user
+  })
+
 });
 
 export const userRouter = router;
