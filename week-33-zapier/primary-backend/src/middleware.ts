@@ -16,5 +16,6 @@ export function authMiddleware(
     return res.status(403).json({
       message: "you are not logged in",
     });
+    next()
   }
 }
